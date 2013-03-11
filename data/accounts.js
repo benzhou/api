@@ -11,34 +11,38 @@ var accounts = (function(connStr){
     *
     * */
     var addNewAccount = function(apiKey, apiSecret, permissions){
+        console.log("data layer add New account called");
         var q = require("q"),
             deferred = q.defer();
 
         mongoClient.open(function(err, mongoClient) {
             if(err){
+                console.log("error when open the mongo client");
                 mongoClient.close();
                 //throw err;
                 deferred.reject(err);
+            }else{
+                var db = mongoClient.db("API"),
+                    acctCollection = db.collection('account'),
+                    account = {
+                        apiKey: apiKey,
+                        apiSecret : apiSecret,
+                        permissions : permissions
+                    };
+
+                acctCollection.insert(account,{w:1}, function(err, result){
+                    if(err){
+                        console.log("error when writes new accounts");
+                        console.dir(err);
+                        mongoClient.close();
+                        deferred.reject(err);
+                    }else{
+                        console.log("sucessfully added new accounts.");
+                        mongoClient.close();
+                        deferred.resolve(result);
+                    }
+                });
             }
-            var db = mongoClient.db("API"),
-                acctCollection = db.collection('account'),
-                account = {
-                    apiKey: apiKey,
-                    apiSecret : apiSecret,
-                    permissions : permissions
-                };
-
-            acctCollection.insert(account,{w:1}, function(err, result){
-                if(err){
-                    console.dir(err);
-                    deferred.reject(err);
-                }else{
-                    deferred.resolve(result);
-                }
-
-            });
-
-            mongoClient.close();
         });
 
         return deferred.promise;

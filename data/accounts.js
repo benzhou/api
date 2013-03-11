@@ -27,19 +27,11 @@ var accounts = (function(connStr){
             }else{
                 var db = mongoClient.db("api"),
                     acctCollection = db.collection('account');
-
-                acctCollection.find({apiKey: apikey}, function(err, result){
-                    if(err){
-                        console.log("error when writes new accounts");
-                        console.dir(err);
-                        mongoClient.close();
-                        deferred.reject(err);
-                    }else{
-                        console.log("sucessfully added new accounts.");
-                        mongoClient.close();
-                        deferred.resolve(result);
-                    }
-                });
+                var acctDoc = acctCollection.findOne({apiKey: apikey});
+                console.log('data account: loadAccount : find account doc.');
+                console.log(acctDoc);
+                mongoClient.close();
+                deferred.resolve(acctDoc);
             }
         });
 

@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var accountBiz = require('business/accounts.js');
+var accountBiz = require('./business/accounts.js');
 
 // Config
 

@@ -18,7 +18,7 @@ app.configure(function () {
 
 app.get('/api/LoadAccount', function(req, res){
     var resData = {
-        success : 0,
+        success : false,
         errCode : 0,
         errMsg : '',
         data : {}
@@ -27,20 +27,20 @@ app.get('/api/LoadAccount', function(req, res){
     accountBiz.loadAccount('XYZ').then(function(data){
         console.log('app js, app.get => /api/LoadAccount, loadAccount successful.');
         console.log(data);
-        resData.success = 1;
+        resData.success = true;
         resData.data = data;
-    }).fail(function(err){
+    },function(err){
         console.log('app js, app.get => /api/LoadAccount, loadAccount failed.');
         console.log(err);
         resData.errCode = 501;
         resData.errMeg = 'Some error happened';
-        data.errObj = err;
+        resData.errObj = err;
+    }).then(function(){
+        var strResData = JSON.stringify(resData);
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Length', strResData.length);
+        res.end(strResData);
     });
-
-    var strResData = JSON.stringify(resData);
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Length', strResData.length);
-    res.end(strResData);
 });
 
 app.get('/api/AddNewAccount', function(req, res){

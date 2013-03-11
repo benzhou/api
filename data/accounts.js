@@ -1,3 +1,4 @@
+constants = require('../constants.js');
 
 var accounts = (function(connStr){
     var mongodb = require('mongodb');
@@ -6,6 +7,10 @@ var accounts = (function(connStr){
 
     var mongoClient = new MongoClient(new Server('localhost', 27017));
 
+    /*
+    * Description: method used to load the API account document.
+    * returns: promise object.
+    * */
     var loadAccount = function(apiKey){
         console.log('data account: loadAccount');
         console.log('apiKey: ' + apiKey);
@@ -22,8 +27,7 @@ var accounts = (function(connStr){
             if(err){
                 console.log("error when open the mongo client");
                 mongoClient.close();
-                //throw err;
-                deferred.reject({errType: 1, msg: 'system error', errObj: err});
+                deferred.reject({errType: constants.errTypes.system, msg: 'system error', errObj: err});
             }else{
                 var db = mongoClient.db("api"),
                     acctCollection = db.collection('account');
@@ -32,7 +36,7 @@ var accounts = (function(connStr){
                     if(err){
                         console.log('data account: loadAccount: err when find an account.');
                         mongoClient.close();
-                        deferred.reject({errType: 1, msg: 'system error', errObj: err});
+                        deferred.reject({errType: constants.errTypes.system, msg: 'system error', errObj: err});
                     }else{
                         console.log('data account: loadAccount : find account doc.');
                         console.log(item);
@@ -59,7 +63,7 @@ var accounts = (function(connStr){
                 console.log("error when open the mongo client");
                 mongoClient.close();
                 //throw err;
-                deferred.reject(err);
+                deferred.reject({errType: constants.errTypes.system, msg: 'system error', errObj: err});
             }else{
                 var db = mongoClient.db("api"),
                     acctCollection = db.collection('account'),
@@ -74,7 +78,7 @@ var accounts = (function(connStr){
                         console.log("error when writes new accounts");
                         console.dir(err);
                         mongoClient.close();
-                        deferred.reject(err);
+                        deferred.reject({errType: constants.errTypes.system, msg: 'system error', errObj: err});
                     }else{
                         console.log("sucessfully added new accounts.");
                         mongoClient.close();

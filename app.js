@@ -37,9 +37,10 @@ app.get('/api/LoadAccount', function(req, res){
         data.errObj = err;
     });
 
+    var strResData = JSON.stringify(resData);
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Length', body.length);
-    res.end(JSON.stringify(resData));
+    res.setHeader('Content-Length', strResData.length);
+    res.end(strResData);
 });
 
 app.get('/api/AddNewAccount', function(req, res){

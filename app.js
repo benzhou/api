@@ -9,7 +9,11 @@ app.configure(function () {
     app.use(express.methodOverride());
     app.use(app.router);
     app.use(express.static(__dirname, "public"));
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(function(err, req, res, next){
+        console.error(err.stack);
+        res.send(500, 'Something broke!');
+    });
 });
 
 app.get('/api', function(req, res){

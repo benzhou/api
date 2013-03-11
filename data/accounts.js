@@ -27,7 +27,7 @@ var accounts = (function(connStr){
             }else{
                 var db = mongoClient.db("api"),
                     acctCollection = db.collection('account');
-                var acctDoc = acctCollection.findOne({"apiKey": apiKey});
+                var acctDoc = acctCollection.findOne({apiKey: apiKey});
                 console.log('data account: loadAccount : find account doc.');
                 console.log(acctDoc);
                 mongoClient.close();

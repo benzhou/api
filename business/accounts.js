@@ -38,6 +38,7 @@ var accountBiz = module.exports = function(){
         };
 
     return {
-        addNewAccount : addNewAccount
+        addNewAccount : addNewAccount,
+        loadAccount : loadAccount
     }
 }();

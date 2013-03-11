@@ -25,7 +25,7 @@ app.get('/api/AddNewAccount', function(req, res){
     res.setHeader('Content-Type', 'text/plain');
     res.setHeader('Content-Length', body.length);
     console.log("add new account called!");
-    accountBiz.addNewAccount("XYZ", "XYZSECRET", []).done(function(){
+    accountBiz.addNewAccount("XYZ", "XYZSECRET", []).then(function(d){
         console.log("success!");
         isSucess = true;
         res.end(body + isSucess);

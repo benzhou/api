@@ -23,15 +23,23 @@ var accounts = (function(connStr){
                 console.log("error when open the mongo client");
                 mongoClient.close();
                 //throw err;
-                deferred.reject(err);
+                deferred.reject({errType: 1, msg: 'system error', errObj: err});
             }else{
                 var db = mongoClient.db("api"),
                     acctCollection = db.collection('account');
-                var acctDoc = acctCollection.findOne({apiKey: apiKey});
-                console.log('data account: loadAccount : find account doc.');
-                console.log(acctDoc);
-                mongoClient.close();
-                deferred.resolve(acctDoc);
+
+                acctCollection.findOne({apiKey: apiKey}, function(err, item){
+                    if(err){
+                        console.log('data account: loadAccount: err when find an account.');
+                        mongoClient.close();
+                        deferred.reject({errType: 1, msg: 'system error', errObj: err});
+                    }else{
+                        console.log('data account: loadAccount : find account doc.');
+                        console.log(item);
+                        mongoClient.close();
+                        deferred.resolve(item);
+                    }
+                });
             }
         });
 

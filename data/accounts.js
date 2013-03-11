@@ -22,7 +22,7 @@ var accounts = (function(connStr){
                 //throw err;
                 deferred.reject(err);
             }else{
-                var db = mongoClient.db("API"),
+                var db = mongoClient.db("api"),
                     acctCollection = db.collection('account'),
                     account = {
                         apiKey: apiKey,

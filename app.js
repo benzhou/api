@@ -19,12 +19,20 @@ app.get('/api', function(req, res){
     res.end(body);
 });
 
-app.post('/api/AddNewAccount', function(req, res){
-//    var body = 'Hello World';
-//    res.setHeader('Content-Type', 'text/plain');
-//    res.setHeader('Content-Length', body.length);
-//    res.end(body);
-    accountBiz.addNewAccount("XYZ", "XYZSECRET", []);
+app.get('/api/AddNewAccount', function(req, res){
+    var body = 'You result is:',
+        isSucess = false;
+    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Length', body.length);
+
+    accountBiz.addNewAccount("XYZ", "XYZSECRET", []).done(function(){
+        console.log("success!");
+        isSucess = true;
+        res.end(body + isSucess);
+    }).fail(function(e){
+            console.log("failed!");
+            res.end(body + isSucess);
+        });
 });
 
 app.listen(3000);

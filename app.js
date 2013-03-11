@@ -16,11 +16,30 @@ app.configure(function () {
     });
 });
 
-app.get('/api', function(req, res){
-    var body = 'Hello World';
-    res.setHeader('Content-Type', 'text/plain');
+app.get('/api/LoadAccount', function(req, res){
+    var resData = {
+        success : 0,
+        errCode : 0,
+        errMsg : '',
+        data : {}
+    };
+
+    accountBiz.loadAccount('XYZ').then(function(data){
+        console.log('app js, app.get => /api/LoadAccount, loadAccount successful.');
+        console.log(data);
+        resData.success = 1;
+        resData.data = data;
+    }).fail(function(err){
+        console.log('app js, app.get => /api/LoadAccount, loadAccount failed.');
+        console.log(err);
+        resData.errCode = 501;
+        resData.errMeg = 'Some error happened';
+        data.errObj = err;
+    });
+
+    res.setHeader('Content-Type', 'application/json');
     res.setHeader('Content-Length', body.length);
-    res.end(body);
+    res.end(JSON.stringify(resData));
 });
 
 app.get('/api/AddNewAccount', function(req, res){

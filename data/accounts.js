@@ -49,4 +49,4 @@ var accounts = (function(connStr){
     }
 })();
 
-exports.data = accounts;
+module.exports = accounts;

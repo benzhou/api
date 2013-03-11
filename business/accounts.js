@@ -1,6 +1,6 @@
 var data_account = require('../data/accounts.js');
 
-var accountBiz = function(){
+var accountBiz = module.exports = function(){
 
     var addNewAccount = function(apiKey, apiSecret, permissions){
         var promise = data_account.addNewAccount(apiKey, apiSecret, permissions);
@@ -11,5 +11,3 @@ var accountBiz = function(){
         addNewAccount : addNewAccount
     }
 }();
-
-module.exports.biz = accountBiz;

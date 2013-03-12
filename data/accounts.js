@@ -18,11 +18,6 @@ var accounts = (function(connStr){
         var q = require('q'),
             deferred = q.defer();
 
-        if(!apiKey || apiKey === undefined){
-            deferred.reject({errType: 1, msg: 'API key cannot be empty'});
-            return deferred;
-        }
-
         mongoClient.open(function(err, mongoClient) {
             if(err){
                 console.log("error when open the mongo client");

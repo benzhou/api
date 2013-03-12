@@ -18,7 +18,7 @@ var auth = module.exports = function(){
                 console.log('data == null, cannot find existing account, cannot verify');
                 deferred.reject({
                     errType: constants.errTypes.client,
-                    errCode: constants.errCodes.invalidApiAcct,
+                    errCode: constants.errCodes.invalidApiAcct.code,
                     msg: util.format('Cannot find account info my provided apiKey: %s', apiKey),
                     errObj: null});
             }else{
@@ -41,7 +41,7 @@ var auth = module.exports = function(){
                     console.log("auth biz -authApiCall: found api account, however, no permission set.");
                     deferred.reject({
                         errType: constants.errTypes.client,
-                        errCode: constants.errCodes.permissionNotGranted,
+                        errCode: constants.errCodes.permissionNotGranted.code,
                         msg: util.format('Permission denied: %s for method: %s', apiKey, methodName),
                         errObj: null});
                 }else{

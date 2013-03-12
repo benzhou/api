@@ -7,7 +7,7 @@ var accountBiz = module.exports = function(){
         var q = require('q');
             deferred = q.defer();
 
-            loadAccount(apiKey).then(function(data){
+            data_account.loadAccount(apiKey).then(function(data){
                 console.log('account biz -addNewAccount: loadAccount then callback.');
                 console.log('data returned from then');
                 console.log(data);
@@ -25,7 +25,11 @@ var accountBiz = module.exports = function(){
                     });
                 }else{
                     console.log('account biz -addNewAccount: data != null, same apiKey already exits in account collection.');
-                    deferred.reject('Account already exists!');
+                    deferred.reject(deferred.reject({
+                        errType: constants.errTypes.client,
+                        errCode: constants.errCodes.accountAlreadyExists.code,
+                        msg: util.format('Cannot find account info my provided apiKey: %s', apiKey),
+                        errObj: null}));
                 }
             });
 
@@ -33,8 +37,24 @@ var accountBiz = module.exports = function(){
     },
         loadAccount = function(apiKey){
             console.log("account biz : load account method called.");
-            var promise = data_account.loadAccount(apiKey);
-            return promise;
+            var q = require('q');
+                deferred = q.defer();
+
+            data_account.loadAccount(apiKey).then(function(data){
+                if(data === null){
+                    deferred.reject({
+                        errType: constants.errTypes.client,
+                        errCode: constants.errCodes.invalidApiAcct.code,
+                        msg: util.format('Cannot find account info my provided apiKey: %s', apiKey),
+                        errObj: null});
+                }else{
+                    deferred.resolve(data);
+                }
+            },function(err){
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
         };
 
     return {

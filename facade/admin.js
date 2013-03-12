@@ -71,7 +71,7 @@ var adminFacade = module.exports = (function(){
                 console.log('app js, app.get => /api/LoadAccount, loadAccount failed.');
                 console.log(err);
                 resData.errCode = (err.errType === constants.errTypes.system? constants.errCodes.sysError.code:err.errCode);
-                resData.errMeg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.errMeg);
+                resData.errMeg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
                 resData.errObj = (err.errType === constants.errTypes.system? {}:err);
             }).then(function(){
                     var strResData = JSON.stringify(resData);
@@ -81,7 +81,7 @@ var adminFacade = module.exports = (function(){
                 });
         }, function(err){
             resData.errCode = (err.errType === constants.errTypes.system? constants.errCodes.sysError.code:err.errCode);
-            resData.errMeg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.errMeg);
+            resData.errMeg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
             resData.errObj = (err.errType === constants.errTypes.system? {}:err);
 
             var strResData = JSON.stringify(resData);

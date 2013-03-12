@@ -47,7 +47,7 @@ var adminFacade = module.exports = (function(){
         //Check if required params presented in the request.
         if(!debug && (!key || !apiKey || !tenantId || !timestamp || !nonce || !sig)){
             resData.errCode = constants.errCodes.missParam.code;
-            resData.errMeg = constants.errCodes.missParam.msg;
+            resData.errMsg = constants.errCodes.missParam.msg;
         }
 
         //if any error codes already been assigned, then return the error response directly.
@@ -71,7 +71,7 @@ var adminFacade = module.exports = (function(){
                 console.log('app js, app.get => /api/LoadAccount, loadAccount failed.');
                 console.log(err);
                 resData.errCode = (err.errType === constants.errTypes.system? constants.errCodes.sysError.code:err.errCode);
-                resData.errMeg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
+                resData.errMsg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
                 resData.errObj = (err.errType === constants.errTypes.system? {}:err);
             }).then(function(){
                     var strResData = JSON.stringify(resData);
@@ -81,7 +81,7 @@ var adminFacade = module.exports = (function(){
                 });
         }, function(err){
             resData.errCode = (err.errType === constants.errTypes.system? constants.errCodes.sysError.code:err.errCode);
-            resData.errMeg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
+            resData.errMsg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
             resData.errObj = (err.errType === constants.errTypes.system? {}:err);
 
             var strResData = JSON.stringify(resData);

@@ -1,4 +1,5 @@
-var data_account = require('../data/accounts.js');
+var data_account = require('../data/accounts.js'),
+    constants = require('../constants.js');
 
 var accountBiz = module.exports = function(){
 
@@ -41,6 +42,8 @@ var accountBiz = module.exports = function(){
                 deferred = q.defer();
 
             data_account.loadAccount(apiKey).then(function(data){
+                console.log("accounts biz: loadAccount: loaded account");
+                console.log(data);
                 if(data == null){
                     deferred.reject({
                         errType: constants.errTypes.client,

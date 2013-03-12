@@ -44,7 +44,7 @@ var adminFacade = module.exports = (function(){
             debug = true;
 
         //Check if required params presented in the request.
-        if(!key || !apiKey || !tenantId || !timestamp || !nonce || !sig){
+        if(!debug && (!key || !apiKey || !tenantId || !timestamp || !nonce || !sig)){
             resData.errCode = constants.errCodes.missParam.code;
             resData.errMeg = constants.errCodes.missParam.msg;
         }

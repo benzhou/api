@@ -52,6 +52,8 @@ var accountBiz = module.exports = function(){
                         msg: util.format('Cannot find account info my provided apiKey: %s', apiKey),
                         errObj: null});
                 }else{
+                    //Hides apiSecret from being returned to the consumer, in fact, we should never expose the secret.
+                    //So instead of being able to see the secret, and update it, we should only allow to reset it.
                     delete data.apiSecret;
                     deferred.resolve(data);
                 }

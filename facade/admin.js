@@ -9,14 +9,21 @@ var adminFacade = module.exports = (function(){
     /*
     * Description: This is a private method that meant to be facilitate the auth call to the biz logic.
     * */
-    var _authCaller = function(apiKey, methodName, tenantId, timestamp, nonce, extra, sig){
+    var _authCaller = function(apiKey, methodName, tenantId, timestamp, nonce, extra, sig, debug){
         var deferred = q.defer();
 
-        authBiz.authApiCall(apiKey, methodName, tenantId, timestamp, nonce, extra, sig).then(function(data){
-            deferred.resolve(data);
-        }, function(err){
-            deferred.reject(err);
-        });
+        if(debug){
+            deferred.resolve({
+                validSig: true,
+                hash: "debugging",
+                sig : "debugging"});
+        }else{
+            authBiz.authApiCall(apiKey, methodName, tenantId, timestamp, nonce, extra, sig).then(function(data){
+                deferred.resolve(data);
+            }, function(err){
+                deferred.reject(err);
+            });
+        }
 
         return deferred.promise;
     };
@@ -33,7 +40,8 @@ var adminFacade = module.exports = (function(){
             tenantId = req.query.tid,
             timestamp = req.query.ts,
             nonce = req.query.nonce,
-            sig = req.query.sig;
+            sig = req.query.sig,
+            debug = true;
 
         //Check if required params presented in the request.
         if(!key || !apiKey || !tenantId || !timestamp || !nonce || !sig){
@@ -50,7 +58,7 @@ var adminFacade = module.exports = (function(){
         //Verify permission here:
         //put the extra plain text together.
         var extra = utils.format("%s",key);
-        var authPromise =_authCaller(apiKey, 'loadAccount', tenantId, timestamp, nonce, extra, sig);
+        var authPromise =_authCaller(apiKey, 'loadAccount', tenantId, timestamp, nonce, extra, sig, debug);
 
         q.when(authPromise, function(data){
             accountBiz.loadAccount(key).then(function(data){

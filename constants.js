@@ -7,5 +7,9 @@ var constants = module.exports = {
         noError : {code:200, msg:"No error"},
         sysError : { code: 500 , msg : "System error."},
         missParam : { code: 501 , msg : "Missing required parameter."},
+
+        //auth error codes, 51x
+        invalidApiAcct: {code:511, msg: "invalid api key. Not able to find in accounts."},
+        permissionNotGranted : {code:512, msg:"api key doesn't have permission granted."}
     }
 };

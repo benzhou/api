@@ -41,7 +41,7 @@ var accountBiz = module.exports = function(){
                 deferred = q.defer();
 
             data_account.loadAccount(apiKey).then(function(data){
-                if(data === null){
+                if(data == null){
                     deferred.reject({
                         errType: constants.errTypes.client,
                         errCode: constants.errCodes.invalidApiAcct.code,

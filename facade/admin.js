@@ -58,7 +58,7 @@ var adminFacade = module.exports = (function(){
 
         //Verify permission here:
         //put the extra plain text together.
-        var extra = utils.format("%s",key);
+        var extra = util.format("%s",key);
         var authPromise =_authCaller(apiKey, 'loadAccount', tenantId, timestamp, nonce, extra, sig, debug);
 
         q.when(authPromise, function(data){

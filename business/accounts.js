@@ -1,6 +1,6 @@
 var data_account = require('../data/accounts.js'),
     constants = require('../constants.js'),
-    utils = require('util');
+    util = require('util');
 
 var accountBiz = module.exports = function(){
 

@@ -1,7 +1,7 @@
 var accountBiz = require('../business/accounts.js'),
     authBiz = require('../business/auth.js'),
     constants = require('../constants.js'),
-    utils = require('util');
+    util = require('util');
 
 
 var adminFacade = module.exports = (function(){

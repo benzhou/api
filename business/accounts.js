@@ -52,6 +52,7 @@ var accountBiz = module.exports = function(){
                         msg: util.format('Cannot find account info my provided apiKey: %s', apiKey),
                         errObj: null});
                 }else{
+                    delete data.apiSecret;
                     deferred.resolve(data);
                 }
             },function(err){

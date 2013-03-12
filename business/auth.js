@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 var data_account = require('../data/accounts.js');
 var constants = require('../constants.js');
-var utils = require('utils');
+var utils = require('util');
 var q = require('q');
 
 var auth = module.exports = function(){

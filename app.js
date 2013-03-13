@@ -12,7 +12,7 @@ app.configure(function () {
     //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(function(err, req, res, next){
         console.log("=====================================================");
-        console.log("Error captured by err handler:");
+        console.log(util.format("Error captured by err handler *Middleware* -- %s:", (new Date()).toUTCString()));
         console.log("=====================================================");
         console.error(err.stack);
         console.log("=====================================================");
@@ -25,22 +25,21 @@ app.configure(function () {
     });
 });
 
-app.get('/api/admin/LoadAccount/:key', adminFacade.loadAccount);
+/*
+* Description: Admin API section
+* */
+app.get('/api/admin/account/:key?', adminFacade.loadAccount);
+app.post('/api/admin/account', adminFacade.upsertAccount);
 
-app.get('/api/AddNewAccount', function(req, res){
-    var body = 'You result is:',
-        isSucess = false;
-    res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Length', body.length);
-    console.log("add new account called!");
-    accountBiz.addNewAccount("XYZ", "XYZSECRET", []).then(function(d){
-        console.log("success!");
-        isSucess = true;
-        res.end(body + isSucess);
-    }).fail(function(e){
-            console.log("failed!");
-            res.end(body + isSucess);
-        });
+/////////////////////////////////////////
+//Node process Error Handling functions//
+/////////////////////////////////////////
+process.on('uncaughtException', function (err) {
+    console.log("=====================================================");
+    console.log(util.format("Error captured by err handler *process uncaughtException* -- %s:", (new Date()).toUTCString()));
+    console.log("=====================================================");
+    console.error(err.stack);
+    console.log("=====================================================");
 });
 
 app.listen(3000);

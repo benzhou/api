@@ -27,7 +27,36 @@ var adminFacade = module.exports = (function(){
         }
 
         return deferred.promise;
-    };
+    },
+        upsertAccount = function(req, res){
+            var resData = {
+                    success : false,
+                    errCode : constants.errCodes.noError.code,
+                    errMsg : '',
+                    data : {}
+                },
+                apiKey = req.query.apiKey,
+                tenantId = req.query.tid || "all",
+                timestamp = req.query.ts,
+                nonce = req.query.nonce,
+                sig = req.query.sig,
+                debug = true;
+
+            console.log('admin upsertAccount');
+            console.log(req.body);
+
+            //Check if required params presented in the request.
+            if(!debug && (!key || !apiKey || !tenantId || !timestamp || !nonce || !sig)){
+                resData.errCode = constants.errCodes.missParam.code;
+                resData.errMsg = constants.errCodes.missParam.msg;
+            }
+
+            //if any error codes already been assigned, then return the error response directly.
+            if(resData.errCode !== constants.errCodes.noError.code){
+                res.send(JSON.stringify(resData));
+                return;
+            }
+        };
 
     var loadAccount = function(req, res){
         var resData = {
@@ -38,7 +67,7 @@ var adminFacade = module.exports = (function(){
             },
             apiKey = req.query.apiKey,
             key = req.params.key,
-            tenantId = req.query.tid,
+            tenantId = req.query.tid || "all",
             timestamp = req.query.ts,
             nonce = req.query.nonce,
             sig = req.query.sig,
@@ -74,24 +103,21 @@ var adminFacade = module.exports = (function(){
                 resData.errMsg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
                 resData.errObj = (err.errType === constants.errTypes.system? {}:err);
             }).then(function(){
-                    var strResData = JSON.stringify(resData);
                     res.setHeader('Content-Type', 'application/json');
-                    res.setHeader('Content-Length', strResData.length);
-                    res.end(strResData);
+                    res.jsonp(resData);
                 });
         }, function(err){
             resData.errCode = (err.errType === constants.errTypes.system? constants.errCodes.sysError.code:err.errCode);
             resData.errMsg = (err.errType === constants.errTypes.system? constants.errCodes.sysError.msg:err.msg);
             resData.errObj = (err.errType === constants.errTypes.system? {}:err);
 
-            var strResData = JSON.stringify(resData);
             res.setHeader('Content-Type', 'application/json');
-            res.setHeader('Content-Length', strResData.length);
-            res.end(strResData);
+            res.jsonp(resData);
         });
     };
 
     return {
-        loadAccount : loadAccount
+        loadAccount : loadAccount,
+        upsertAccount : upsertAccount
     };
 })();
